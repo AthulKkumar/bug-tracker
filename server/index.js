@@ -1,8 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const connectDB = require('./config/db');
 require('dotenv').config();
+
+const connectDB = require('./config/db');
+const { errorHandler } = require('./middlewares/errorMiddleware');
+const v1Route = require('./routes');
 
 const PORT = process.env.PORT || 5000;
 
@@ -12,9 +15,14 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Connect to database
 connectDB();
+
+
+// Routes
+app.use('/api', v1Route);
 
 
 // Serve React build
@@ -25,8 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 // });
 
-// Error handler (uncomment when you add back)
-// app.use(errorHandler);
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
