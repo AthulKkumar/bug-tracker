@@ -18,7 +18,7 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://local
 app.use(cors({
     origin: allowedOrigins,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());

@@ -32,7 +32,7 @@ export async function getBug(id) {
 
 export async function updateBug(id, payload) {
     try {
-        const res = await api.patch(`/bugs/${id}`, payload);
+        const res = await api.put(`/bugs/${id}`, payload);
         return res.data;
     } catch (err) {
         throw new Error(err?.message || "Failed to update bug");
