@@ -38,7 +38,7 @@ export default function BugModalForm({ onAddBug }) {
             const result = await createBug(data);
             reset();
             setOpen(false);
-            if (onAddBug) onAddBug(result);
+            if (onAddBug) onAddBug(result.data);
         } catch (err) {
             console.error(err.message);
         }
