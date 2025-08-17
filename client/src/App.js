@@ -1,14 +1,18 @@
 import { BrowserRouter } from "react-router-dom";
+import { Theme } from "@radix-ui/themes";
 import { AuthProvider } from "./context/AuthContext";
+import "@radix-ui/themes/styles.css";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
-    </BrowserRouter>
+    <Theme appearance="dark">
+      <BrowserRouter>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </BrowserRouter>
+    </Theme>
   );
 }
 

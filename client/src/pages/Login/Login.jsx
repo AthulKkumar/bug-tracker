@@ -4,6 +4,17 @@ import { z } from "zod";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Heading,
+  Flex,
+  Card,
+  Text,
+} from "@radix-ui/themes";
+import FormField from "../../components/FormField";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -28,39 +39,47 @@ export default function Login() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="p-6 max-w-md mx-auto border rounded shadow"
-    >
-      <h2 className="text-xl mb-4 font-semibold">Login</h2>
+    <Container size="2" p="6">
+      <Flex justify="center" align="center" style={{ minHeight: "100vh" }}>
+        <Card size="4" style={{ width: "100%", maxWidth: 400 }}>
+          <Heading as="h2" size="6" mb="5" align="center">
+            Login
+          </Heading>
 
-      <input
-        {...register("email")}
-        placeholder="Email"
-        className="border p-2 w-full mb-2"
-      />
-      {errors.email && (
-        <p className="text-red-500 text-sm">{errors.email.message}</p>
-      )}
-      <input
-        {...register("password")}
-        type="password"
-        placeholder="Password"
-        className="border p-2 w-full mb-2"
-      />
-      {errors.password && (
-        <p className="text-red-500 text-sm">{errors.password.message}</p>
-      )}
-
-      {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
-      >
-        {isSubmitting ? "Logging in..." : "Login"}
-      </button>
-    </form>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Flex direction="column" gap="4">
+              <Box>
+                <FormField
+                  label="Email"
+                  type="email"
+                  placeholder="Enter your email"
+                  name="email"
+                  register={register}
+                  error={errors.email?.message}
+                />
+              </Box>
+              <Box>
+                <FormField
+                  label="Password"
+                  type="password"
+                  placeholder="Enter your password"
+                  name="password"
+                  register={register}
+                  error={errors.password?.message}
+                />
+              </Box>
+              <Button
+                type="submit"
+                size="3"
+                disabled={isSubmitting}
+                highContrast
+              >
+                {isSubmitting ? "Logging in..." : "Login"}
+              </Button>
+            </Flex>
+          </form>
+        </Card>
+      </Flex>
+    </Container>
   );
 }
