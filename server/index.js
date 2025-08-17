@@ -36,13 +36,11 @@ app.use('/api', v1Route);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // // React Router fallback (for client-side routes)
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-// });
+app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-
-module.exports = app;
