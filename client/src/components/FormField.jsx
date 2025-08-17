@@ -1,4 +1,3 @@
-// src/components/FormField.jsx
 import { TextField } from "@radix-ui/themes";
 
 export default function FormField({ label, error, type = "text", register, name, placeholder }) {

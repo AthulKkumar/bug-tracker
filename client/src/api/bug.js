@@ -3,7 +3,6 @@ import api from "./axios";
 export async function listBugs(params = {}) {
     try {
         const res = await api.get("/bugs", { params });
-        // Expecting { data: [...], meta: { page, limit, total } }
         return res.data;
     } catch (err) {
         throw new Error(err?.message || "Failed to load bugs");

@@ -41,59 +41,59 @@ export default function Register() {
   };
 
   return (
-     <Container size="2" p="6">
-      
+    <Container size="2" p="6">
+
       <Flex justify="center" align="center" style={{ minHeight: "100vh" }}>
         <Card size="4" style={{ width: "100%", maxWidth: 400 }}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="max-w-md mx-auto p-6 border rounded-xl shadow-md space-y-4"
-        >
-           <Flex direction="column" gap="4">
-          <Heading align="center" size="6" mb="4">
-            Create an Account
-          </Heading>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="max-w-md mx-auto p-6 border rounded-xl shadow-md space-y-4"
+          >
+            <Flex direction="column" gap="4">
+              <Heading align="center" size="6" mb="4">
+                Create an Account
+              </Heading>
 
-          <FormField
-            label="Email"
-            type="email"
-            placeholder="Enter your email"
-            name="email"
-            register={register}
-            error={errors.email}
-          />
+              <FormField
+                label="Email"
+                type="email"
+                placeholder="Enter your email"
+                name="email"
+                register={register}
+                error={errors.email}
+              />
 
-          <FormField
-            label="Password"
-            type="password"
-            placeholder="Enter your password"
-            name="password"
-            register={register}
-            error={errors.password}
-          />
+              <FormField
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                name="password"
+                register={register}
+                error={errors.password}
+              />
 
-          <FormField
-            label="Confirm Password"
-            type="password"
-            placeholder="Confirm your password"
-            name="confirmPassword"
-            register={register}
-            error={errors.confirmPassword}
-          />
+              <FormField
+                label="Confirm Password"
+                type="password"
+                placeholder="Confirm your password"
+                name="confirmPassword"
+                register={register}
+                error={errors.confirmPassword}
+              />
 
-          <Button type="submit" disabled={isSubmitting} className="w-full">
-            {isSubmitting ? "Registering..." : "Register"}
-          </Button>
+              <Button type="submit" disabled={isSubmitting} className="w-full">
+                {isSubmitting ? "Registering..." : "Register"}
+              </Button>
 
-          <p className="text-sm text-center mt-3">
-            Already have an account?{" "}
-            <a href="/login" className="text-blue-600 hover:underline">
-              Login
-            </a>
-          </p>
-          </Flex>
-        </form>
-       </Card>
+              <p className="text-sm text-center mt-3">
+                Already have an account?{" "}
+                <a href="/login" className="text-blue-600 hover:underline">
+                  Login
+                </a>
+              </p>
+            </Flex>
+          </form>
+        </Card>
       </Flex>
     </Container>
   );

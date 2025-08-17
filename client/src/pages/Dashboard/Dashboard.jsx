@@ -1,5 +1,4 @@
-
-import { Card, Flex, Heading } from "@radix-ui/themes";
+import { Card, Flex, Heading, Select } from "@radix-ui/themes";
 import { useNavigate } from "react-router-dom";
 import BugTable from "../../components/BugTable";
 import BugModalForm from "../../components/BugModal";
@@ -14,22 +13,31 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Fetch bugs on mount
+  const [filterField, setFilterField] = useState("severity"); 
+  const [filterValue, setFilterValue] = useState("all");
+
+  const severityOptions = ["low", "medium", "high"];
+  const statusOptions = ["open", "in_progress", "fixed", "closed"];
+
+  // Fetch bugs from server
+  const fetchBugs = async (field = "", value = "") => {
+    try {
+      setLoading(true);
+      let query = "";
+      if (field && value && value !== "all") query = `?${field}=${value}`;
+      const res = await api.get(`/bugs${query}`);
+      if (Array.isArray(res?.data)) setBugs(res.data);
+      else setError("Unexpected response format from server.");
+    } catch (err) {
+      setError(err?.response?.data?.message || err?.message || "Failed to fetch bugs");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchBugs = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get("/bugs");
-        if (Array.isArray(res?.data)) setBugs(res?.data);
-        else setError("Unexpected response format from server.");
-      } catch (err) {
-        setError(err?.response?.data?.message || err?.message || "Failed to fetch bugs");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchBugs();
-  }, []);
+    fetchBugs(filterField, filterValue);
+  }, [filterField, filterValue]);
 
   return (
     <div style={{ width: "100%", paddingTop: "20px" }}>
@@ -37,10 +45,31 @@ export default function Dashboard() {
         Bug Tracker
       </Heading>
 
-      <Card >
+      <Card>
         <Flex direction="column" justify="between" gap={4}>
           <Flex justify="between" align="center" style={{ marginBottom: "20px" }}>
-            <h2 className="text-2xl font-bold" />
+            <Flex gap="2">
+              <Select.Root value={filterValue} onValueChange={setFilterValue}>
+                <Select.Trigger placeholder={`Filter by ${filterField}`} />
+                <Select.Content>
+                  <Select.Item value="all">All</Select.Item>
+                  {(filterField === "severity" ? severityOptions : statusOptions).map((option) => (
+                    <Select.Item key={option} value={option}>
+                      {option.charAt(0).toUpperCase() + option.slice(1)}
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Root>
+
+              <Select.Root value={filterField} onValueChange={setFilterField}>
+                <Select.Trigger placeholder="Select filter type" />
+                <Select.Content>
+                  <Select.Item value="severity">Severity</Select.Item>
+                  <Select.Item value="status">Status</Select.Item>
+                </Select.Content>
+              </Select.Root>
+            </Flex>
+
             <BugModalForm onAddBug={(newBug) => setBugs((prev) => [newBug, ...prev])} />
           </Flex>
 
@@ -49,7 +78,10 @@ export default function Dashboard() {
           ) : error ? (
             <p className="text-red-500 text-center">{error}</p>
           ) : (
-            <BugTable bugs={bugs} />
+            <BugTable
+              bugs={bugs}
+              onDelete={(id) => setBugs((prev) => prev.filter((bug) => bug._id !== id))}
+            />
           )}
         </Flex>
       </Card>

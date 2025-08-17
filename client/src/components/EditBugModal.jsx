@@ -1,4 +1,3 @@
-// src/components/EditBugModal.jsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,7 +15,7 @@ const bugSchema = z.object({
 });
 
 export default function EditBugModal({ bugData, onUpdate }) {
-    const [open, setOpen] = useState(false); 
+    const [open, setOpen] = useState(false);
 
     const {
         register,
