@@ -78,7 +78,15 @@ export default function Login() {
                 {isSubmitting ? "Logging in..." : "Login"}
               </Button>
             </Flex>
+
+            <p className="text-sm text-center mt-3">
+                Create and Account{" "}
+                <a href="/register" className="text-blue-600 hover:underline">
+                  Create
+                </a>
+              </p>
           </form>
+
         </Card>
       </Flex>
     </Container>
