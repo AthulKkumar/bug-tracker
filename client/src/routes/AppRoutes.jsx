@@ -4,19 +4,21 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import NotFound from "../pages/404/NotFound";
+import BugDetails from "../pages/BugDetail/BugDetails";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
-  if (loading) return <p>Loading...</p>;
- debugger;
-  return user ? children : <Navigate to="/login" />;
-};
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
+  return user ? children : <Navigate to="/login" replace />;
+};
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/dashboard" />} />
+      {/* <Route path="/" element={<Navigate to="/dashboard" />} /> */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route
@@ -26,6 +28,14 @@ export default function AppRoutes() {
             <Dashboard />
           </PrivateRoute>
         }
+      />
+      <Route
+        path="/bugs/:id"
+        element={
+          <PrivateRoute>
+            <BugDetails />
+          </PrivateRoute>
+        } 
       />
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -7,31 +7,45 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-//   useEffect(() => {
-//     const fetchUser = async () => {
-//       try {
-//         const { data } = await api.get("/user", { withCredentials: true });
-//         setUser(data || null);
-//       } catch (err) {
-//         setUser(null);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     fetchUser();
-//   }, []);
+  // Restore session on mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const { data } = await api.get("/user", { withCredentials: true });
+        setUser(data); 
+      } catch (err) {
+        setUser(null); 
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const login = async (credentials) => {
-    const { data } = await api.post("/user/login", credentials, {
-      withCredentials: true,
-    });
-    setUser(data.user);
-    return data;
+    try {
+      setLoading(true);
+      const { data } = await api.post("/user/login", credentials, {
+        withCredentials: true,
+      });
+      setUser(data);
+      return data;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = async () => {
-    await api.post("/user/logout", {}, { withCredentials: true });
-    setUser(null);
+    try {
+      setLoading(true);
+      await api.post("/user/logout", {}, { withCredentials: true });
+      setUser(null);
+    } catch (err) {
+      console.error("Logout failed", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

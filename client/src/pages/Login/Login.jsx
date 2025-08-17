@@ -33,6 +33,7 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     const success = await login(data);
+    localStorage.setItem("token", success.token);
     if (success) {
       navigate("/dashboard");
     }
