@@ -12,7 +12,7 @@ exports.registerUser = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt);
 
-        const user = await User.create({ email, passwordHash });
+        const user = await User.create({ email, password: passwordHash });
         res.status(201).json({
             _id: user.id,
             email: user.email,
@@ -27,7 +27,7 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });
-        if (user && (await bcrypt.compare(password, user.passwordHash))) {
+        if (user && (await bcrypt.compare(password, user.password))) {
             res.status(200).json({
                 _id: user.id,
                 email: user.email,
